@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet author="malex" id="1" runAlways="true">
+        <sql>
+            <![CDATA[
+                INSERT INTO CD_FILES
+                    (DEPARTMENT, BACKUP_SET, FULL_PATH, CD_PATH, "DISK")
+                VALUES
+                    ('NEW_DEPARTMENT', 'NEW_BACKUP_SET', 'NEW_FULL_PATH', 'NEW_CD_PATH', 'NEW_DISK');
+            ]]>
+        </sql>
+        <rollback/>
+    </changeSet>
+
+</databaseChangeLog>

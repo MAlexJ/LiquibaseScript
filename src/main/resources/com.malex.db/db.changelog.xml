@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                   http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <preConditions onSqlOutput="TEST" onFailMessage="Database is already reserved for another application">
+        <sqlCheck expectedResult="dflow">
+            SELECT COALESCE(MAX(id),'dflow')
+            FROM
+            databasechangelog
+            WHERE author='ApplicationId'
+        </sqlCheck>
+    </preConditions>
+
+    <changeSet author="ApplicationId" id="dflow"/>
+
+    <include file="com.malex.db/v22.0/master.xml"/>
+    <include file="com.malex.db/v22.1/master.xml"/>
+    <include file="com.malex.db/v22.2/master.xml"/>
+
+</databaseChangeLog>
