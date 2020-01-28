@@ -13,7 +13,6 @@
                     ('NEW_DEPARTMENT', 'NEW_BACKUP_SET', 'NEW_FULL_PATH', 'NEW_CD_PATH', 'NEW_DISK');
             ]]>
         </sql>
-        <rollback/>
     </changeSet>
 
 </databaseChangeLog>

@@ -21,7 +21,6 @@
                  );
             ]]>
         </sql>
-        <rollback/>
     </changeSet>
 
 </databaseChangeLog>
