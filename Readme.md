@@ -38,22 +38,23 @@ DEPARTMENT VARCHAR(50) NOT NULL, <br>
 BACKUP_SET VARCHAR(50) NOT NULL,  <br>
 FULL_PATH VARCHAR(500) NOT NULL, <br>
 CD_PATH VARCHAR(300) NOT NULL, <br>
-"DISK" VARCHAR(50) NOT NULL); <br>
+"DISK" VARCHAR(50) NOT NULL <br>
+); <br>
 
 -- Drop Table<br>
-DROP TABLE CD_FILES;
-DROP TABLE DATABASECHANGELOG;
-DROP TABLE DATABASECHANGELOGLOCK;
+DROP TABLE CD_FILES; <br>
+DROP TABLE DATABASECHANGELOG; <br>
+DROP TABLE DATABASECHANGELOGLOCK; <br>
 
 OR <br>
 
-BEGIN
-FOR c IN (SELECT table_name FROM user_tables) LOOP
-EXECUTE IMMEDIATE ('DROP TABLE "' || c.table_name || '" CASCADE CONSTRAINTS');
-END LOOP;
-FOR s IN (SELECT sequence_name FROM user_sequences) LOOP
-EXECUTE IMMEDIATE ('DROP SEQUENCE ' || s.sequence_name);
-END LOOP;
+BEGIN <br>
+FOR c IN (SELECT table_name FROM user_tables) LOOP <br>
+EXECUTE IMMEDIATE ('DROP TABLE "' || c.table_name || '" CASCADE CONSTRAINTS'); <br>
+END LOOP; <br>
+FOR s IN (SELECT sequence_name FROM user_sequences) LOOP <br>
+EXECUTE IMMEDIATE ('DROP SEQUENCE ' || s.sequence_name); <br>
+END LOOP; <br>
 END;
 
 **Oracle DB backup and restore** <br>

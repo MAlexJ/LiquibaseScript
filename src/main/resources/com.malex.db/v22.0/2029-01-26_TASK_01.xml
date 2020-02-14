@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
-    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <changeSet author="malex" id="1" runAlways="true">
         <preConditions onFail="MARK_RAN" onSqlOutput="IGNORE">
             <not>
-                <tableExists tableName="CD_FILES" />
+                <tableExists tableName="CD_FILES"/>
             </not>
         </preConditions>
         <sql>
@@ -21,6 +20,106 @@
                  );
             ]]>
         </sql>
+    </changeSet>
+
+    <changeSet author="malex" id="2" runAlways="true">
+        <preConditions onFail="MARK_RAN" onSqlOutput="IGNORE">
+            <not>
+                <tableExists tableName="LC110"/>
+            </not>
+        </preConditions>
+        <sql>
+            <![CDATA[
+               CREATE TABLE "LC110" (
+                    "LC110_CODE" NUMBER(*,0) NOT NULL ENABLE,
+	                "LC110_R101515" VARCHAR2(4000 CHAR),
+	                CONSTRAINT "PK_LC110" PRIMARY KEY ("LC110_CODE")
+                );
+            ]]>
+        </sql>
+    </changeSet>
+
+    <changeSet author="malex" id="3" runAlways="true">
+        <preConditions onFail="MARK_RAN" onSqlOutput="IGNORE">
+            <tableExists tableName="LC110"/>
+            <columnExists tableName="LC110" columnName="LC110_R101515"/>
+            <not>
+                <indexExists indexName="IND_LC110_R101515_FT"/>
+            </not>
+        </preConditions>
+        <sql>
+            <![CDATA[
+                CREATE INDEX "IND_LC110_R101515_FT" ON "LC110" ("LC110_R101515") INDEXTYPE IS "CTXSYS"."CONTEXT" ;
+            ]]>
+        </sql>
+    </changeSet>
+
+    <changeSet author="malex" id="4" runAlways="true">
+        <preConditions onFail="MARK_RAN" onSqlOutput="IGNORE">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(1) FROM LC110;
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            <![CDATA[
+                INSERT INTO "LC110" (LC110_CODE, LC110_R101515) VALUES (1, 'JOANNE SO');
+                INSERT INTO "LC110" (LC110_CODE, LC110_R101515) VALUES (2, 'JOANNE DELLSSO');
+                INSERT INTO "LC110" (LC110_CODE, LC110_R101515) VALUES (3, 'JOANNE HIRATA');
+                INSERT INTO "LC110" (LC110_CODE, LC110_R101515) VALUES (4, 'JOANNE BURNS');
+                INSERT INTO "LC110" (LC110_CODE, LC110_R101515) VALUES (5, 'JOANNE GONSALVES');
+                INSERT INTO "LC110" (LC110_CODE, LC110_R101515) VALUES (6, 'JIMMY MARCHANT');
+                INSERT INTO "LC110" (LC110_CODE, LC110_R101515) VALUES (7, 'JIMMY UGALDE');
+                INSERT INTO "LC110" (LC110_CODE, LC110_R101515) VALUES (8, 'JIMMY GREEN');
+                INSERT INTO "LC110" (LC110_CODE, LC110_R101515) VALUES (9, 'JIMMY STILL JIMMY J STILL');
+            ]]>
+        </sql>
+    </changeSet>
+
+    <changeSet author="aleksey.maximov" id="5" runOnChange="true">
+        <preConditions onFail="MARK_RAN" onSqlOutput="IGNORE">
+            <tableExists tableName="LC110"/>
+            <columnExists tableName="LC110" columnName="LC110_R101515"/>
+            <indexExists indexName="IND_LC110_R101515_FT"/>
+        </preConditions>
+        <sql endDelimiter="/" splitStatements="false">
+            <![CDATA[
+                    BEGIN
+                        CTX_DDL.create_preference ('WORDLIST_PREF', 'BASIC_WORDLIST');
+                        CTX_DDL.set_attribute ('WORDLIST_PREF', 'substring_index', 'YES');
+                        CTX_DDL.set_attribute ('WORDLIST_PREF', 'prefix_index', 'YES');
+                    END;
+                ]]>
+        </sql>
+        <sql>
+            <![CDATA[
+                    ALTER INDEX "IND_LC110_R101515_FT" rebuild parameters('REPLACE METADATA STOPLIST CTXSYS.EMPTY_STOPLIST');
+                    ALTER INDEX "IND_LC110_R101515_FT" rebuild parameters('REPLACE WORDLIST WORDLIST_PREF');
+                ]]>
+        </sql>
+        <rollback>
+            <sql endDelimiter="/" splitStatements="false">
+                <![CDATA[
+                        DECLARE
+                            COUNT_PREF INTEGER;
+                        BEGIN
+                            SELECT COUNT ( * )
+                                INTO COUNT_PREF
+                                FROM CTXSYS.ctx_preferences
+                                WHERE PRE_NAME = 'WORDLIST_PREF';
+                            IF COUNT_PREF > 0
+                            THEN
+                                CTX_DDL.drop_preference('WORDLIST_PREF');
+                            END IF;
+                        END;
+                    ]]>
+            </sql>
+            <sql>
+                <![CDATA[
+                        ALTER INDEX "IND_LC110_R101515_FT" rebuild parameters('REPLACE METADATA STOPLIST CTXSYS.DEFAULT_STOPLIST');
+                        ALTER INDEX "IND_LC110_R101515_FT" rebuild parameters('REPLACE WORDLIST CTXSYS.DEFAULT_WORDLIST');
+                    ]]>
+            </sql>
+        </rollback>
     </changeSet>
 
 </databaseChangeLog>
