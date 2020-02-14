@@ -81,6 +81,7 @@
             <columnExists tableName="LC110" columnName="LC110_R101515"/>
             <indexExists indexName="IND_LC110_R101515_FT"/>
         </preConditions>
+        <comment>Improve left, right and double truncated wildcard queries</comment>
         <sql endDelimiter="/" splitStatements="false">
             <![CDATA[
                     BEGIN
@@ -92,8 +93,8 @@
         </sql>
         <sql>
             <![CDATA[
-                    ALTER INDEX "IND_LC110_R101515_FT" rebuild parameters('REPLACE METADATA STOPLIST CTXSYS.EMPTY_STOPLIST');
-                    ALTER INDEX "IND_LC110_R101515_FT" rebuild parameters('REPLACE WORDLIST WORDLIST_PREF');
+                    ALTER INDEX IND_LC110_R101515_FT rebuild parameters('REPLACE METADATA STOPLIST CTXSYS.EMPTY_STOPLIST');
+                    ALTER INDEX IND_LC110_R101515_FT rebuild parameters('REPLACE WORDLIST WORDLIST_PREF');
                 ]]>
         </sql>
         <rollback>
@@ -115,8 +116,8 @@
             </sql>
             <sql>
                 <![CDATA[
-                        ALTER INDEX "IND_LC110_R101515_FT" rebuild parameters('REPLACE METADATA STOPLIST CTXSYS.DEFAULT_STOPLIST');
-                        ALTER INDEX "IND_LC110_R101515_FT" rebuild parameters('REPLACE WORDLIST CTXSYS.DEFAULT_WORDLIST');
+                        ALTER INDEX IND_LC110_R101515_FT rebuild parameters('REPLACE METADATA STOPLIST CTXSYS.DEFAULT_STOPLIST');
+                        ALTER INDEX IND_LC110_R101515_FT rebuild parameters('REPLACE WORDLIST CTXSYS.DEFAULT_WORDLIST');
                     ]]>
             </sql>
         </rollback>
