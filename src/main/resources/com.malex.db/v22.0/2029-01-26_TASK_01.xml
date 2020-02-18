@@ -54,7 +54,7 @@
         </sql>
     </changeSet>
 
-    <changeSet author="malex" id="4" runAlways="true">
+    <changeSet author="malex" id="4">
         <preConditions onFail="MARK_RAN" onSqlOutput="IGNORE">
             <sqlCheck expectedResult="0">
                 SELECT COUNT(1) FROM LC110;
@@ -80,6 +80,9 @@
             <tableExists tableName="LC110"/>
             <columnExists tableName="LC110" columnName="LC110_R101515"/>
             <indexExists indexName="IND_LC110_R101515_FT"/>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(1) FROM CTXSYS.CTX_USER_PREFERENCES WHERE PRE_NAME = 'WORDLIST_PREF';
+            </sqlCheck>
         </preConditions>
         <comment>Improve left, right and double truncated wildcard queries</comment>
         <sql endDelimiter="/" splitStatements="false">
@@ -103,9 +106,9 @@
                         DECLARE
                             COUNT_PREF INTEGER;
                         BEGIN
-                            SELECT COUNT ( * )
+                            SELECT COUNT(1)
                                 INTO COUNT_PREF
-                                FROM CTXSYS.ctx_preferences
+                                FROM CTXSYS.CTX_USER_PREFERENCES
                                 WHERE PRE_NAME = 'WORDLIST_PREF';
                             IF COUNT_PREF > 0
                             THEN

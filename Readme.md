@@ -63,6 +63,30 @@ BEGIN
 END;
 ```
 
+> Look at all user preferences <br>
+https://docs.oracle.com/cd/B19306_01/text.102/b14218/aviews.htm#r1c1-t38
+
+```
+SELECT * FROM CTXSYS.CTX_USER_PREFERENCES WHERE PRE_NAME = 'WORDLIST_PREF';
+```
+
+> Remove user preference by name
+
+```
+DECLARE
+    COUNT_PREF INTEGER;
+BEGIN
+    SELECT COUNT(1)
+        INTO COUNT_PREF
+        FROM CTXSYS.CTX_USER_PREFERENCES
+        WHERE PRE_NAME = 'WORDLIST_PREF';
+    IF COUNT_PREF > 0
+    THEN
+        CTX_DDL.drop_preference('WORDLIST_PREF');
+    END IF;
+END;
+```
+
 **Oracle DB backup and restore** <br>
 
 QLDeveloper backup and recovery is integrated in the GUI. 
