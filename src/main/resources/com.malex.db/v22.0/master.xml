@@ -5,5 +5,6 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <include file="com.malex.db/v22.0/2029-01-26_TASK_01.xml" />
+    <include file="com.malex.db/v22.0/2030-01-10_TASK_02.xml" />
 
 </databaseChangeLog>
